@@ -1,0 +1,80 @@
+#customizer{
+  
+}
+
+#customizer .titulo{
+  text-transform: uppercase;
+    font-weight: bold;
+    color: #000;
+    font-size: 16px;
+    margin-bottom: 1rem;
+}
+
+#customizer .customization-title{
+  text-transform: uppercase;
+    color: #000;
+    font-weight: bold;
+}
+
+#customizer .customization-options{
+  display: flex
+;
+    margin: 1rem 0 2rem 0;
+    flex-wrap: wrap;
+    gap:.5rem
+}
+#customizer .customization-options .option.selected{border: 1px solid #000;outline: 1px solid #000;}
+#customizer .customization-options .option:hover{background: #fff;box-shadow: 0px 0px 15px rgba(0,0,0,.1);scale:1.5;}
+#customizer .customization-options .option{
+border: 1px solid #ccc;
+    padding: .5rem;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    flex-direction: column;
+    width: calc(8% - .3rem);
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+}
+#customizer .customization-options .option.disabled{
+  opacity: .3;
+  filter: grayscale(1);
+}
+
+#customizer .customization-options .option img{
+  width: 100%;
+}
+
+#customizer #selected-options{}
+#customizer #selected-options h3{
+  text-transform: uppercase;
+    font-weight: bold;
+    color: #000;
+    font-size: 16px;
+    margin-bottom: 1rem;
+}
+#customizer #selected-options .selected-list{display: flex
+;
+    gap: 1rem;}
+#customizer #selected-options .selected-list .selected-option img{}
+#customizer #selected-options .selected-list .selected-option{
+display: flex
+;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5rem;
+    border: 1px solid #ccc;
+    flex-direction: column;
+    width: 3rem;
+    background: #f2f2f2;
+}
+
+#customizer #selected-options .selected-list .selected-option-case{
+      display: flex
+;
+    gap: .5rem;
+    flex-direction: column;
+    color: #000;
+}
