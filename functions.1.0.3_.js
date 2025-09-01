@@ -318,26 +318,33 @@ class ProductCustomizer {
     this.customizerElement.addEventListener('click', (event) => {
       const option = event.target.closest('.option:not(.disabled)');
       if (!option) return;
-      
+
       // Remove seleção anterior do mesmo grupo
       const customizationOptions = GofferUtils.closest(option, '.customization-options');
       customizationOptions.querySelectorAll('.option.selected').forEach(el => {
         el.classList.remove('selected');
       });
-      
+
       // Adiciona a classe selected à opção clicada
       option.classList.add('selected');
-      
+
+      // Remove aviso de erro se existir
+      const customizationEl = GofferUtils.closest(option, '.customization');
+      const msgDiv = customizationEl.querySelector('.customization-message');
+      if (msgDiv) {
+        msgDiv.remove();
+      }
+
       // Atualiza a lista de opções selecionadas
       this.updateSelectedOptions();
-      
+
       // Encontra a próxima customização visível
-      const currentCustomization = GofferUtils.closest(option, '.customization');
-      
+      const currentCustomization = customizationEl;
+
       // Verifica se todas as customizações visíveis têm uma opção selecionada
       let allSelected = true;
       let nextVisibleCustomization = null;
-      
+
       let foundCurrent = false;
       this.customizationContainers.forEach(customization => {
         if (!customization.classList.contains('hide')) {
@@ -345,18 +352,18 @@ class ProductCustomizer {
           if (!hasSelection) {
             allSelected = false;
           }
-          
+
           // Encontra a próxima customização após a atual
           if (foundCurrent && !nextVisibleCustomization) {
             nextVisibleCustomization = customization;
           }
-          
+
           if (customization === currentCustomization) {
             foundCurrent = true;
           }
         }
       });
-      
+
       // Define para onde fazer o scroll
       if (allSelected) {
         // Rola para a seção de opções selecionadas
@@ -390,13 +397,14 @@ class ProductCustomizer {
             if (!customizationEl.querySelector('.option.selected')) {
               hasError = true;
               errorMessage = config.message || 'Selecione uma opção para prosseguir.';
-              // Exibe aviso abaixo da customização
+              // Exibe aviso logo abaixo do customization-title
+              const titleEl = customizationEl.querySelector('.customization-title');
               const msgDiv = document.createElement('div');
               msgDiv.className = 'customization-message';
               msgDiv.style.color = 'red';
               msgDiv.style.marginTop = '8px';
               msgDiv.textContent = errorMessage;
-              customizationEl.appendChild(msgDiv);
+              titleEl.insertAdjacentElement('afterend', msgDiv);
             }
           }
         });
