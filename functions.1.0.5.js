@@ -5,7 +5,7 @@
 
 'use strict';
 
-
+// Configurações e dados
 
 window.customizer = window.customizer || [];
 
@@ -747,15 +747,6 @@ class CartManager {
  * Inicialização quando o documento estiver pronto
  */
 document.addEventListener('DOMContentLoaded', () => {
-  // Adiciona botão de importação de fatura de cartão (exemplo: no topo da página)
-  if (!document.getElementById('btn-import-card-invoice')) {
-    const btn = document.createElement('button');
-    btn.id = 'btn-import-card-invoice';
-    btn.textContent = 'Importar Fatura Cartão';
-    btn.style = 'position:fixed;top:16px;right:16px;z-index:9999;background:#1976d2;color:#fff;padding:8px 16px;border:none;border-radius:4px;box-shadow:0 2px 8px #0002;';
-    btn.onclick = showCardInvoiceImport;
-    document.body.appendChild(btn);
-  }
   // Inicializa em páginas de produto
   if (document.querySelector('.pagina-produto')) {
     // Seleciona a primeira variação por padrão (se existir)
