@@ -503,6 +503,7 @@ class ProductCustomizer {
           const acoesProdutoElement = document.querySelector(`.acoes-produto[data-variacao-id="${primaryVariacao}"]`);
           const sku = acoesProdutoElement ? GofferUtils.getLastClass(acoesProdutoElement.className) : '';
           const savedItems = GofferUtils.storage.get('goffer_customizer');
+          const item = savedItems.find(i => i.sku === sku);
           
           // Remove aviso anterior
           const existingWarning = document.querySelector('.aviso-personalizado-carrinho');
@@ -510,31 +511,23 @@ class ProductCustomizer {
             existingWarning.remove();
           }
           
-          // Abordagem mais simples: verificar se existe alguma personalização salva 
-          // para qualquer SKU visível na página atualmente
-          savedItems.forEach(item => {
-            if (item.customizations && item.customizations.length > 0) {
-              // Verifica se o elemento .acoes-produto com este SKU está visível
-              const productAction = document.querySelector(`.acoes-produto.${item.sku}`);
+          // Exibe aviso se já existe personalização para o SKU
+          if (item && item.customizations && item.customizations.length > 0) {
+            const atributos = document.querySelector('.atributos');
+            if (atributos) {
+              const warningElement = GofferUtils.dom.createElement('div', 
+                { class: 'alert alert-danger aviso-personalizado-carrinho' }, 
+                `${window.aviso_titulo || 'Atenção! Limite por pedido'}<small>${window.aviso_mensagem || 'No momento é possível comprar apenas uma unidade de cada variação por pedido.'}</small>`
+              );
+              atributos.after(warningElement);
               
-              if (productAction && productAction.offsetParent !== null) { // verificação de visibilidade
-                const atributos = document.querySelector('.atributos');
-                if (atributos) {
-                  const warningElement = GofferUtils.dom.createElement('div', 
-                    { class: 'alert alert-danger aviso-personalizado-carrinho' }, 
-                    `${window.aviso_titulo || 'Atenção! Limite por pedido'}<small>${window.aviso_mensagem || 'No momento é possível comprar apenas uma unidade de cada variação por pedido.'}</small>`
-                  );
-                  atributos.after(warningElement);
-                  
-                  // Desabilita o botão de compra
-                  productAction.setAttribute('disabled', 'true');
-                  
-                  // Terminamos após encontrar o primeiro item personalizado visível
-                  return false;
-                }
+              // Adiciona atributo disabled ao .acoes-produto correspondente
+              const productAction = document.querySelector(`.acoes-produto.${sku}`);
+              if (productAction) {
+                productAction.setAttribute('disabled', 'true');
               }
             }
-          });
+          }
           
           // Limpa seleções atuais
           this.customizerElement.querySelectorAll('.option.selected').forEach(option => {
